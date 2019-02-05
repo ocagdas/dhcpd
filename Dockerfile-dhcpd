@@ -1,0 +1,16 @@
+FROM alpine
+
+RUN apk add --no-cache dhcp
+
+ADD entrypoint.sh /entrypoint.sh
+
+EXPOSE 67/udp 67/tcp
+
+RUN touch /etc/dhcp/dhcpd.leases
+RUN chmod +x /entrypoint.sh
+
+RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories
+
+VOLUME ["/etc/dhcp"]
+
+ENTRYPOINT ["/entrypoint.sh"]
